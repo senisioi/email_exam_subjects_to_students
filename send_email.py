@@ -47,6 +47,10 @@ def get_mesaj(fisier, email_student):
     return mesaj
 
 
+def files_in_folder(directory):
+    return [os.path.join(directory, fis) for fis in os.listdir(directory) if not os.path.isdir(fis)]
+
+
 def main():
     # make sure you enable less secure apps from:
     # https://myaccount.google.com/lesssecureapps 
@@ -57,13 +61,11 @@ def main():
     # input: un director in care se afla toate arhivele cu subiecte 
     #        cu numele format din emailul studetilor
     arhive_subiecte = './arhive_subiecte'
-    subiecte = os.listdir(arhive_subiecte)
-    for sub in subiecte:
-        if os.path.isdir(sub):
-            continue
-        path_arhiva = os.path.join(arhive_subiecte, sub)
-        email_student = sub.replace('.zip', '')
-        mesaj = get_mesaj(path_arhiva, email_student)
+    subiecte = files_in_folder(arhive_subiecte)
+    for arhiva in subiecte:
+        subiect = os.path.basename(arhiva)
+        email_student = subiect.replace('.zip', '')
+        mesaj = get_mesaj(arhiva, email_student)
         mail_server.send_message(mesaj)
     mail_server.quit()
 
