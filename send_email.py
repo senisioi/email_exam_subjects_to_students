@@ -60,6 +60,14 @@ def files_in_folder(directory, extension='.zip'):
 
 
 def main():
+    # input: un director in care se afla toate arhivele cu subiecte 
+    #        cu numele format din emailul studetilor
+    if len(sys.argv) < 2:
+        logging.error("First argument must be a path to a directory with zip files named by email addresses.")
+        sys.exit(-1)
+    arhive_subiecte = sys.argv[1] # './arhive_subiecte'
+
+
     # make sure you enable less secure apps from:
     # https://myaccount.google.com/lesssecureapps
     mail_server = smtplib.SMTP_SSL('smtp.gmail.com')
@@ -86,9 +94,6 @@ def main():
         sys.exit(-1)
 
 
-    # input: un director in care se afla toate arhivele cu subiecte 
-    #        cu numele format din emailul studetilor
-    arhive_subiecte = './arhive_subiecte'
     subiecte = files_in_folder(arhive_subiecte)
     for arhiva in subiecte:
         subiect = os.path.basename(arhiva).strip()
